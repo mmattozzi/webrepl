@@ -1,0 +1,11 @@
+{
+  "name" : "webrepl",
+  "version" : "0.1.0",
+  "description" : "Serve a repl for a node process via a web console",
+  "author" : "Mike Mattozzi <mike.mattozzi@gmail.com>",
+  "main" : "./webrepl.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mmattozzi/webrepl.js.git"
+  }
+}
