@@ -1,5 +1,6 @@
 <html>
     <head>
+        <title>Node REPL</title>
         <style>
             body {
                 background-color: #EBE8E0;
@@ -88,6 +89,8 @@
                 $.get('info', function(data) {
                     $('#header').prepend($("<div>[" + data.pid + '] ' + data.name + "</div>"));
                 }, 'json');
+                
+                $('#in').focus();
             });
             
             function commandEntered() {

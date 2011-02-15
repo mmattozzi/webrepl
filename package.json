@@ -6,6 +6,6 @@
   "main" : "./webrepl.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/mmattozzi/webrepl.js.git"
+    "url": "git://github.com/mmattozzi/webrepl.git"
   }
 }
