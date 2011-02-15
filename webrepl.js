@@ -9,6 +9,7 @@ var ReplHttpServer = function ReplHttpServer(prompt, stream, replServer) {
     this.prompt = prompt;
     this.stream = stream;
     this.replServer = replServer;
+    this.webdir = __dirname;
 };
 
 ReplHttpServer.prototype.start = function(port, hostname, stream, replServer) {
@@ -67,6 +68,7 @@ ReplHttpServer.prototype.route = function(req, res) {
         if (match) {
             var file = match[1];
             if (file === '') { file = 'index.html'; }
+            file = this.webdir + '/' + file;
             this.serveFile(file, res);
         }
     }
