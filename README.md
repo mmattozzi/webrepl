@@ -1,3 +1,5 @@
+Requires: Node v0.4.0 or higher, but may work on older versions. I haven't tested this yet.
+
 Usage:
 
     var webrepl = require('./webrepl');
