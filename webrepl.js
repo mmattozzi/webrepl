@@ -63,6 +63,15 @@ ReplHttpServer.prototype.route = function(req, res) {
         var info = { 'pid': process.pid, 'name': name };
         res.writeHead(200, {'Content-Type': 'application/json'});
         res.end(JSON.stringify(info));
+    } else if (req.url.match(/^\/clear/) && req.method === 'POST') {
+        var rli = this.replServer.rli;
+        if (this.replServer.bufferedCommand && this.replServer.bufferedCommand.length > 0) {
+          rli.write('\n');
+          this.replServer.bufferedCommand = '';
+          this.replServer.displayPrompt();
+        }
+        res.writeHead(200, {'Content-Type': 'text/plain'});
+        res.end();
     } else { 
         match = req.url.match(/\/(.*)/);
         if (match) {

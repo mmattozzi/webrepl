@@ -7,9 +7,34 @@
                 margin-top: 0px;
             }
         
-            input#in {
+            table#input-bar {
                 width:92%;
                 margin-left: 4%;
+            }
+        
+            #clear {
+                width: 100%;
+                font-size:28px;
+                font-family:Verdana;
+                background-color: #FF5C5C;
+                -moz-border-radius: 5px;
+                -webkit-border-radius: 5px;
+                border-radius: 5px;
+                padding: 4px;
+                margin-top: 0px; margin-bottom: 0px;
+                margin-left: 2px; margin-right: 2px;
+                box-shadow: 5px 5px 5px #888;
+                -moz-box-shadow: 5px 5px 5px #888;
+                -webkit-box-shadow: 5px 5px 5px #888;
+            }
+            
+            #clear:hover {
+                cursor:pointer;
+                background-color: red;
+            }
+        
+            input#in {
+                width: 100%;
                 font-size:30px;
                 font-family:Verdana;
                 color:#0B5C7B;
@@ -86,12 +111,24 @@
                     }
                 });
                 
+                $('#clear').width('100px');
+                $('#clear').click(function() {
+                    clear();
+                });
+                
                 $.get('info', function(data) {
                     $('#header').prepend($("<div>[" + data.pid + '] ' + data.name + "</div>"));
                 }, 'json');
                 
                 $('#in').focus();
             });
+            
+            function clear() {
+                $.post('clear', function(data) {
+                    getResponse();
+                });
+                $('#out').prepend($("<div class='replErr'>[ reset ]</div>"));
+            }
             
             function commandEntered() {
                 if (! blurbHidden) {
@@ -102,21 +139,30 @@
                 $('#out').prepend($("<div class='replIn'>" + command + "</div>"));
                 $.post('repl', command, function(data) {
                     $('#in').val('');
-                    $.get('repl', function(resData) {
-                        var type = 'replOut';
-                        if (resData.match(/.*Error:/)) {
-                            type = 'replErr';
-                        }
-                        $('#out').prepend($("<div class='" + type + "'>" + resData + "</div>"));
-                    });
+                    getResponse();
                 }, "text");
+            }
+            
+            function getResponse() {
+                $.get('repl', function(resData) {
+                    var type = 'replOut';
+                    if (resData.match(/.*Error:/)) {
+                        type = 'replErr';
+                    }
+                    $('#out').prepend($("<div class='" + type + "'>" + resData + "</div>"));
+                });
             }
             
         </script>
     </head>
     <body>
         <div id="header"></div>
-        <input id="in" type="text" />
+        <table id="input-bar">
+            <tr>
+                <td style="width:95%"><input id="in" type="text" /></td>
+                <td style="width:5%"><span id="clear">^C</span></td>
+            </tr>
+        </table>
         <div id="main-container">
             <div id="out"><div id="blurb">web-repl: Type commands in the above box to execute in this javascript process.</div></div>
         </div>
