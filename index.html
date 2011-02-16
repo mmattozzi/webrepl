@@ -10,9 +10,18 @@
             
             $(document).ready(function() {
                 $('#in').keypress(function(event) {
-                    if (event.which == '13') {
+                    var keyCode = event.keyCode || event.which;
+                    if (keyCode === 13) {
                         event.preventDefault();
                         commandEntered();
+                    } 
+                });
+                
+                $('#in').keydown(function(event) {
+                    var keyCode = event.keyCode || event.which;
+                    if (keyCode === 9) {
+                        event.preventDefault();
+                        complete();
                     }
                 });
                 
@@ -56,6 +65,65 @@
                     }
                     $('#out').prepend($("<div class='" + type + "'>" + resData + "</div>"));
                 });
+            }
+            
+            function complete() {
+                var str = $('#in').val();
+                var i = str.lastIndexOf(' ');
+                var word = str.substr(i + 1);
+                
+                $.get('complete/' + word, function(data) {
+                    if (data.completions.length == 1) {
+                        var sWord = data.completions[0];
+                        $('#in').val($('#in').val() + lettersToAppend(word, sWord));
+                    } else {
+                        var possibles = [];
+                        for (j = 0; j < data.completions.length; j++) {
+                            if (data.completions[j] != '') {
+                                possibles.push(data.completions[j]);
+                            }
+                        }
+                        console.log(possibles);
+                        var suggestString = '';
+                        for (j = 0; j < possibles.length; j++) {
+                            suggestString += possibles[j] + ' ';
+                        }
+                        if (! blurbHidden) {
+                            $('#blurb').hide();
+                            blurbHidden = true;
+                        }
+                        $('#out').prepend($("<div class='replCompl'>" + suggestString + "</div>"));
+                    }
+                }, "json"); 
+            }
+            
+            function lettersToAppend(word1, word2) {
+                var word1Matched = 0;
+                for (i = 0; i < word1.length + word2.length; i++) {
+                    if (word1[i] === word2[word1Matched]) {
+                        word1Matched++;
+                        if ((i+1) == word1.length) {
+                            return word2.substring(word1Matched);
+                        }
+                    } else {
+                        word1Matched = 0;
+                    }
+                }
+            }
+            
+            function longestInCommon(candidates, index) {
+              var i, ch, memo
+              do {
+                memo = null
+                for (i=0; i < candidates.length; i++) {
+                  ch = candidates[i].charAt(index)
+                  if (!ch) break
+                  if (!memo) memo = ch
+                  else if (ch != memo) break
+                }
+              } while (i == candidates.length && ++index)
+
+              return candidates[0].slice(0, index)
             }
             
         </script>
