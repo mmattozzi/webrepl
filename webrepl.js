@@ -64,6 +64,9 @@ ReplHttpServer.prototype.route = function(req, res) {
             var cObj = { "completions": completions[0] };
             res.writeHead(200, {'Content-Type': 'application/json'});
             res.end(JSON.stringify(cObj));
+        } else {
+            res.writeHead(500, {'Content-Type': 'application/json'});
+            res.end();
         }
     } else if (req.url.match(/^\/info/)) {
         var name = (process.argv.length > 1 ? process.argv[1] : process.argv[0]);

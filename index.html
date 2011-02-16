@@ -83,7 +83,6 @@
                                 possibles.push(data.completions[j]);
                             }
                         }
-                        console.log(possibles);
                         var suggestString = '';
                         for (j = 0; j < possibles.length; j++) {
                             suggestString += possibles[j] + ' ';
@@ -137,7 +136,7 @@
             </tr>
         </table>
         <div id="main-container">
-            <div id="out"><div id="blurb">web-repl: Type commands in the above box to execute in this javascript process.</div></div>
+            <div id="out"><div id="blurb">web-repl: Type commands in the above box to execute in this javascript process. Use tab for completion.</div></div>
         </div>
     </body>
 </html>
