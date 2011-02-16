@@ -89,6 +89,8 @@ ReplHttpServer.prototype.serveFile = function(file, response) {
             return "application/x-javascript";
         } else if (file.match(/.html$/)) {
             return "text/html";
+        } else if (file.match(/.css$/)) {
+            return "text/css";
         }
         return "text/plain";
     }
