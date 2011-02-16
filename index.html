@@ -7,6 +7,24 @@
         <script type="text/javascript">
             
             var blurbHidden = false;
+            var cmdHistory = [];
+            var historyIndex = 0;
+            
+            function historyUp() {
+                if (historyIndex < cmdHistory.length) {
+                    var i = historyIndex;
+                    if (historyIndex + 1 < cmdHistory.length) historyIndex++;
+                    return cmdHistory[i];
+                }
+            }
+            
+            function historyDown() {
+                if (historyIndex < cmdHistory.length) {
+                    var i = historyIndex;
+                    if (historyIndex > 0) historyIndex--;
+                    return cmdHistory[i];
+                }
+            }
             
             $(document).ready(function() {
                 $('#in').keypress(function(event) {
@@ -22,6 +40,12 @@
                     if (keyCode === 9) {
                         event.preventDefault();
                         complete();
+                    } else if (keyCode === 38) {
+                        event.preventDefault();
+                        $('#in').val(historyUp());
+                    } else if (keyCode === 40) {
+                       event.preventDefault();
+                        $('#in').val(historyDown());
                     }
                 });
                 
@@ -50,6 +74,8 @@
                     blurbHidden = true;
                 }
                 var command = $('#in').val();
+                cmdHistory.unshift(command);
+                historyIndex = 0;
                 $('#out').prepend($("<div class='replIn'>" + command + "</div>"));
                 $.post('repl', command, function(data) {
                     $('#in').val('');
