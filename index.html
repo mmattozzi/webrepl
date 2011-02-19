@@ -26,6 +26,10 @@
             }
             
             $(document).ready(function() {
+                $('#out').ajaxError(function(e, req, opts, err) {
+                    $('#out').prepend($("<div class='replErr'>[ Error communicating with node process ]</div>"));
+                });
+                
                 $('#in').keypress(function(event) {
                     var keyCode = event.keyCode || event.which;
                     if (keyCode === 13) {
@@ -64,7 +68,7 @@
                 $.post('clear', function(data) {
                     getResponse();
                 });
-                $('#out').prepend($("<div class='replErr'>[ reset ]</div>"));
+                $('#out').prepend($("<div class='replErr'>[ Reset ]</div>"));
             }
             
             function commandEntered() {
