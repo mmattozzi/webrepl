@@ -8,21 +8,20 @@
             
             var blurbHidden = false;
             var cmdHistory = [];
-            var historyIndex = 0;
+            var historyIndex = -1;
             
             function historyUp() {
+                if (historyIndex + 1 < cmdHistory.length) historyIndex++;
                 if (historyIndex < cmdHistory.length) {
-                    var i = historyIndex;
-                    if (historyIndex + 1 < cmdHistory.length) historyIndex++;
-                    return cmdHistory[i];
+                    return cmdHistory[historyIndex];
                 }
             }
             
             function historyDown() {
+                if (historyIndex > -1) historyIndex--;
+                if (historyIndex == -1) return "";
                 if (historyIndex < cmdHistory.length) {
-                    var i = historyIndex;
-                    if (historyIndex > 0) historyIndex--;
-                    return cmdHistory[i];
+                    return cmdHistory[historyIndex];
                 }
             }
             
@@ -75,7 +74,7 @@
                 }
                 var command = $('#in').val();
                 cmdHistory.unshift(command);
-                historyIndex = 0;
+                historyIndex = -1;
                 $('#out').prepend($("<div class='replIn'>" + command + "</div>"));
                 $.post('repl', command, function(data) {
                     $('#in').val('');
