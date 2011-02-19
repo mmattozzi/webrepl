@@ -54,6 +54,6 @@ You can also access context variables via HTTP, for example:
 Security Note
 =================
 
-There is none! Don't go exposes your webrepl port to the whole world, they'd be able to do anything to your system or your node process. 
+There is none! Don't go exposing your webrepl port to the whole world, they'd be able to do anything to your system or your node process. 
 
 In the future, I will probably add some form of modest authentication.
