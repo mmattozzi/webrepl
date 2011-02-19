@@ -1,6 +1,12 @@
 About
 =================
-If you're familiar with [node.js](http://nodejs.org) then you're familiar with the provided REPL. You can embed a REPL in your programs and make it available via tcp or unix sockets so that you can connect to a long running node.js program and play around with it on a command line. Webrepl takes the same idea but makes the repl available via an interactive web page so that you can have all the fun of using a repl right in your web browser. Tab completion is included! Webrepl also makes the properties in your context accessible via restful http calls. 
+If you're familiar with [node.js](http://nodejs.org) then you're familiar with the provided REPL. You can embed a REPL in your programs and make it available via tcp or unix sockets so that you can connect to a long running node.js program and play around with it on a command line. Webrepl takes the same idea but makes the repl available via an interactive web page so that you can have all the fun of using a repl right in your web browser. 
+
+* Node.js repl for your process in your browser
+* Tab completion is included! 
+* Command history via up and down arrows
+* Webrepl also makes the properties in your context accessible via restful http calls. 
+* UI inspired by http://search.npmjs.org/
 
 [See a Screenshot](https://github.com/mmattozzi/webrepl/raw/master/doc/webrepl.png)
 
@@ -44,3 +50,10 @@ You can also access context variables via HTTP, for example:
     Transfer-Encoding: chunked
 
     33814
+
+Security Note
+=================
+
+There is none! Don't go exposes your webrepl port to the whole world, they'd be able to do anything to your system or your node process. 
+
+In the future, I will probably add some form of modest authentication.
