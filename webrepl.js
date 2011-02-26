@@ -24,18 +24,38 @@ var http = require('http');
 var fs = require('fs');
 var util = require('util');
 
-var ReplHttpServer = function ReplHttpServer(prompt, stream, replServer) {
+var ReplHttpServer = function ReplHttpServer(prompt, stream, replServer, options) {
     this.running = false;
     this.prompt = prompt;
     this.stream = stream;
     this.replServer = replServer;
     this.webdir = __dirname;
+    if (options !== undefined) {
+        if (options.username !== undefined) {
+            this.username = options.username;
+        }
+        if (options.username !== undefined) {
+            this.password = options.password;
+        }
+        if (options.hostname !== undefined) {
+            this.hostname = options.hostname;
+        }
+    }
 };
 
-ReplHttpServer.prototype.start = function(port, hostname, stream, replServer) {
+ReplHttpServer.prototype.start = function(port) {
     var self = this;
-    self.server = http.createServer(function(req, res) { self.route(req, res); });
-    self.server.listen(port, hostname);
+    if (this.username !== undefined && this.password !== undefined) {
+        // Set up server that requires http digest authentication
+        var httpdigest = require('http-digest');
+        self.server = httpdigest.createServer(this.username, this.password, 
+            function(req, res) { self.route(req, res); });
+        self.server.listen(port, this.hostname);
+    } else {
+        // No auth required
+        self.server = http.createServer(function(req, res) { self.route(req, res); });
+        self.server.listen(port, this.hostname);
+    }
     return self;
 };
 
@@ -149,15 +169,15 @@ ReplHttpServer.prototype.serveFile = function(file, response) {
 /**
  * Starts a repl served via a web console.
  * @param {Integer} port Port to serve web console
- * @param {String} hostname Bind address of web console (optional)
+ * @param {Object} options Set username, password, and hostname options
  * @return Return the REPLServer. Context can be set on this variable.
  */
-var start = function(port, hostname) {
+var start = function(port, options) {
     var stream = new SimpleStream();
     var prompt = 'node> ';
     var rs = new repl.REPLServer(prompt, stream);
-    var replHttpServer = new ReplHttpServer(prompt, stream, rs);
-    replHttpServer.start(port, hostname);
+    var replHttpServer = new ReplHttpServer(prompt, stream, rs, options);
+    replHttpServer.start(port);
     return rs;
 };
 
