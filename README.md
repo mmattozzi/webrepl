@@ -43,11 +43,11 @@ HTTP Authentication can be set (uses http digest authentication):
     
 Available options:
 
-   var options = {
+    var options = {
        'username': 'username for http authentication, password must also be set',
        'password': 'password for http authentication, username must also be set',
        'hostname': 'hostname to listen on. ex: localhost, 192.168.0.1, etc'
-   }
+    }
     
 You can also access context variables via HTTP, for example: 
 
