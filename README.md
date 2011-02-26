@@ -66,6 +66,36 @@ You can also access context variables via HTTP, for example:
     Transfer-Encoding: chunked
 
     33814
+    
+Usage Note
+=================
+
+If you try to start webrepl from the normal, command line repl without assigning it to a variable, you'll see 
+some exceptions. This isn't a problem with starting the server, it's only a problem with parsing the REPLServer 
+object that gets returned.
+
+Here we see an exception because node's object inspection can't output the standard REPLServer object that gets returned:
+
+    > require('webrepl').start(8080);
+    TypeError: Cannot convert object to primitive value
+        at String.STRING_ADD_LEFT (native)
+        at isRegExp (util.js:266:14)
+        at format (util.js:163:11)
+        at util.js:195:19
+        at Array.map (native)
+        at format (util.js:172:23)
+        at util.js:195:19
+        at Array.map (native)
+        at format (util.js:172:23)
+        at util.js:195:19
+    >
+    
+Here there's no exception because the object is assigned to a variable:
+
+    > var wr = require('webrepl').start(8080);
+    >
+    
+*In both cases, webrepl started successfully and is running!*
 
 Security Note
 =================
