@@ -9,7 +9,7 @@ If you're familiar with [node.js](http://nodejs.org) then you're familiar with t
 * UI inspired by http://search.npmjs.org/
 * Optional http authentication
 
-[See a Screenshot](https://github.com/mmattozzi/webrepl/raw/master/doc/webrepl.png)
+![See a Screenshot](https://github.com/mmattozzi/webrepl/raw/master/doc/webrepl.png)
 
 Requires: Node v0.4.0 or higher, but may work on older versions. I haven't tested this yet.
 
