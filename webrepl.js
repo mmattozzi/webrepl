@@ -47,7 +47,7 @@ ReplHttpServer.prototype.start = function(port) {
     var self = this;
     if (this.username !== undefined && this.password !== undefined) {
         // Set up server that requires http digest authentication
-        var httpdigest = require('http-digest');
+        var httpdigest = require('./http-digest');
         self.server = httpdigest.createServer(this.username, this.password, 
             function(req, res) { self.route(req, res); });
         self.server.listen(port, this.hostname);
