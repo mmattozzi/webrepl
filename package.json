@@ -1,6 +1,6 @@
 {
   "name" : "webrepl",
-  "version" : "0.4.1",
+  "version" : "0.4.2",
   "description" : "Serve a repl for a node process via a web console",
   "url": "https://github.com/mmattozzi/webrepl",
   "author" : "Mike Mattozzi <mike.mattozzi@gmail.com>",
@@ -14,5 +14,6 @@
   },
   "dependencies": {
       "http-digest": ">=0.1.0"
-  }
+  },
+  "keywords": [ "repl", "console", "management" ]
 }
