@@ -24,7 +24,22 @@
                     return cmdHistory[historyIndex];
                 }
             }
-            
+
+	    function getCommonPrefix(words) {
+		if (words.length == 0) return '';
+		if (words.length == 1) return words[0];
+		var prefix = words[0];
+		for (var i = 1; i < words.length; ++i) {
+		    var _p = '';
+		    var min_len = Math.min(prefix.length, words[i].length);
+		    for (var j = 0; j < min_len && prefix[j] == words[i][j]; ++j) {
+		        _p += prefix[j];
+		    }
+		    prefix = _p;
+		}
+		return prefix;
+	    }
+
             $(document).ready(function() {
                 $('#out').ajaxError(function(e, req, opts, err) {
                     $('#out').prepend($("<div class='replErr'>[ Error communicating with node process ]</div>"));
@@ -112,6 +127,10 @@
                                 possibles.push(data.completions[j]);
                             }
                         }
+			var expansion = getCommonPrefix(possibles);
+			if (expansion.length > 0) {
+			    $('#in').val($('#in').val() + lettersToAppend(word, expansion));
+			}
                         var suggestString = '';
                         for (j = 0; j < possibles.length; j++) {
                             suggestString += possibles[j] + ' ';
