@@ -89,13 +89,19 @@ ReplHttpServer.prototype.route = function(req, res) {
                 }
             });
         }
-    } else if ((match = req.url.match(/^\/context\/(.*)/))) {
-        var obj = eval('this.replServer.context.' + match[1]);
-        if (obj) {
-            res.writeHead(200, {'Content-Type': 'application/json'});
-            res.end(JSON.stringify(obj));
-        } else {
-            res.writeHeader(404);
+    } else if ((match = req.url.match(/^\/context\/([a-zA-Z_$][0-9a-zA-Z_$\.]*)$/))) {
+        try {
+            var obj = eval('this.replServer.context.' + match[1]);
+            if (obj) {
+                res.writeHead(200, {'Content-Type': 'application/json'});
+                res.end(JSON.stringify(obj));
+            } else {
+                res.writeHeader(404);
+                res.end();
+            }
+        } catch (err) {
+            console.log("Error resolving context request: " + err.toString());
+            res.writeHeader(500);
             res.end();
         }
     } else if ((match = req.url.match(/^\/complete\/(.*)/))) {
