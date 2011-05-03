@@ -90,6 +90,7 @@ div.replIn {
 
 div.replErr {
     color: red;
+    white-space: pre;
 }
 
 div.replCompl {
