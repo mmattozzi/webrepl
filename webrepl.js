@@ -54,6 +54,7 @@ ReplHttpServer.prototype.start = function(port) {
     } else {
         // No auth required
         self.server = http.createServer(function(req, res) { self.route(req, res); });
+        self.server.on('error', function() { /* Ignore Errors */ });
         self.server.listen(port, this.hostname);
     }
     return self;
@@ -61,7 +62,10 @@ ReplHttpServer.prototype.start = function(port) {
 
 ReplHttpServer.prototype.route = function(req, res) {
     var stream = this.stream;
-    
+
+    req.on('error', function() { /* Ignore Errors */ });
+    res.on('error', function() { /* Ignore Errors */ });
+
     var match = null;
     if (req.url.match(/^\/repl/)) {
         if (req.method === 'GET') {

@@ -82,6 +82,7 @@ div#header {
 
 div.replOut {
     color: green;
+    white-space: pre;
 }
 
 div.replIn {
