@@ -110,10 +110,20 @@ ReplHttpServer.prototype.route = function(req, res) {
         }
     } else if ((match = req.url.match(/^\/complete\/(.*)/))) {
         if (match[1].length > 0) {
-            var completions = this.replServer.complete(match[1]);
-            var cObj = { "completions": completions[0] };
-            res.writeHead(200, {'Content-Type': 'application/json'});
-            res.end(JSON.stringify(cObj));
+            // This is written to accomodate both versions of the complete method 
+            // in node.js. Older versions of node (0.4) return the completions from
+            // the function. Newer versions (0.6+) take a callback to handle the
+            // completions.
+            var completionsOld = this.replServer.complete(match[1], function(o, completions) {
+                var cObj = { "completions": completions[0] };
+                res.writeHead(200, {'Content-Type': 'application/json'});
+                res.end(JSON.stringify(cObj));
+            });
+            if (completionsOld !== undefined) {
+                var cObj = { "completions": completionsOld[0] };
+                res.writeHead(200, {'Content-Type': 'application/json'});
+                res.end(JSON.stringify(cObj));
+            }
         } else {
             res.writeHead(500, {'Content-Type': 'application/json'});
             res.end();
