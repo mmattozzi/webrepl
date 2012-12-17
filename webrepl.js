@@ -84,6 +84,7 @@ ReplHttpServer.prototype.route = function(req, res) {
                 allData += data;
             });
             req.on('end', function() {
+                allData += "\n";
                 if (stream.emit('data', allData)) {
                     res.writeHead(200, {'Content-Type': 'text/plain'});
                     res.end();
