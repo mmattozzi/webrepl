@@ -11,7 +11,7 @@ If you're familiar with [node.js](http://nodejs.org) then you're familiar with t
 
 ![See a Screenshot](https://github.com/mmattozzi/webrepl/raw/master/doc/webrepl.png)
 
-Requires: Node v0.4.0 or higher, but may work on older versions. I haven't tested this yet.
+Requires: Node v0.8.0 or higher (for webrepl version 0.4.7+). 
 
 Installation
 =================
@@ -67,36 +67,6 @@ You can also access context variables via HTTP, for example:
 
     33814
     
-Usage Note
-=================
-
-If you try to start webrepl from the normal, command line repl without assigning it to a variable, you'll see 
-some exceptions. This isn't a problem with starting the server, it's only a problem with parsing the REPLServer 
-object that gets returned.
-
-Here we see an exception because node's object inspection can't output the standard REPLServer object that gets returned:
-
-    > require('webrepl').start(8080);
-    TypeError: Cannot convert object to primitive value
-        at String.STRING_ADD_LEFT (native)
-        at isRegExp (util.js:266:14)
-        at format (util.js:163:11)
-        at util.js:195:19
-        at Array.map (native)
-        at format (util.js:172:23)
-        at util.js:195:19
-        at Array.map (native)
-        at format (util.js:172:23)
-        at util.js:195:19
-    >
-    
-Here there's no exception because the object is assigned to a variable:
-
-    > var wr = require('webrepl').start(8080);
-    >
-    
-*In both cases, webrepl started successfully and is running!*
-
 Security Note
 =================
 
