@@ -6,14 +6,14 @@
   "author" : "Mike Mattozzi <mike.mattozzi@gmail.com>",
   "main" : "./webrepl.js",
   "engines": {
-      "node": ">=0.8.0"
+      "node": ">=4.2.3"
   },
   "repository": {
     "type": "git",
     "url": "git://github.com/mmattozzi/webrepl.git"
   },
   "dependencies": {
-      "http-digest": ">=0.1.0"
+      "http-auth": ">=2.2.8"
   },
   "keywords": [ "repl", "console", "management" ]
 }

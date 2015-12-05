@@ -47,9 +47,25 @@ ReplHttpServer.prototype.start = function(port) {
     var self = this;
     if (this.username !== undefined && this.password !== undefined) {
         // Set up server that requires http digest authentication
-        var httpdigest = require('./http-digest');
-        self.server = httpdigest.createServer(this.username, this.password, 
-            function(req, res) { self.route(req, res); });
+        var configuredUsername = this.username;
+        var configuredPassword = this.password;
+        var auth = require('http-auth');
+        var crypto = require('crypto');
+        
+        var digest = auth.digest({ realm: "webrepl" }, 
+            function (username, callback) { // Expecting md5(username:realm:password) in callback.		
+                if (username === configuredUsername) {
+                    var md5hash = crypto.createHash('md5');
+                    callback(md5hash.update(configuredUsername + ":webrepl:" + configuredPassword).digest("hex"));
+                } else {
+                    callback();			
+                }
+            }
+        );
+        
+        self.server = http.createServer(digest, function(req, res) {
+            self.route(req, res);
+        });
         self.server.listen(port, this.hostname);
     } else {
         // No auth required
