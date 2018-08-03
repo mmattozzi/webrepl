@@ -112,13 +112,28 @@ ReplHttpServer.prototype.route = function(req, res) {
         }
     } else if ((match = req.url.match(/^\/context\/([a-zA-Z_$][0-9a-zA-Z_$\.]*)$/))) {
         try {
-            var obj = eval('this.replServer.context.' + match[1]);
-            if (obj) {
-                res.writeHead(200, {'Content-Type': 'application/json'});
-                res.end(JSON.stringify(obj));
-            } else {
+            var variableName = match[1];
+            var obj = eval('replServer.context.' + variableName);
+            if (!obj) {
                 res.writeHeader(404);
                 res.end();
+            } else {
+                if (req.method == 'GET') {
+                    res.writeHead(200, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify(obj));
+                } else if (req.method == 'PUT') {
+                    var allData = "";
+                    req.on('data', function(data) {
+                        allData += data;
+                    });
+                    req.on('end', function() {
+                        console.log("Saving " + allData + " to " + variableName);
+                        eval('replServer.context.' + variableName + ' = ' + allData);
+                        var modifiedObj = eval('replServer.context.' + variableName);
+                        res.writeHead(200, { 'Content-Type': 'application/json' });
+                        res.end(JSON.stringify(modifiedObj));
+                    });
+                }
             }
         } catch (err) {
             console.log("Error resolving context request: " + err.toString());
