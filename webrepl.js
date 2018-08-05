@@ -78,6 +78,7 @@ ReplHttpServer.prototype.start = function(port) {
 
 ReplHttpServer.prototype.route = function(req, res) {
     var stream = this.stream;
+    var replServer = this.replServer;
 
     req.on('error', function() { /* Ignore Errors */ });
     res.on('error', function() { /* Ignore Errors */ });
@@ -227,7 +228,7 @@ ReplHttpServer.prototype.serveFile = function(file, response) {
 var start = function(port, options) {
     var stream = new SimpleStream();
     var prompt = 'node> ';
-    var rs = new repl.REPLServer(prompt, stream);
+    var rs = repl.start({ prompt: prompt, input: stream, output: stream});
     var replHttpServer = new ReplHttpServer(prompt, stream, rs, options);
     replHttpServer.start(port);
     return rs;
