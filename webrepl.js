@@ -80,7 +80,7 @@ ReplHttpServer.prototype.route = function(req, res) {
     var stream = this.stream;
     var replServer = this.replServer;
     
-    if(req.url.includes('../')){
+    if(req.url.includes('..')){
         console.log("Error resolving context request: " + req.url);
         res.writeHeader(500);
         res.end();
