@@ -79,6 +79,12 @@ ReplHttpServer.prototype.start = function(port) {
 ReplHttpServer.prototype.route = function(req, res) {
     var stream = this.stream;
     var replServer = this.replServer;
+    
+    if(req.url.includes('..')){
+        console.log("Error resolving context request: " + req.url);
+        res.writeHeader(500);
+        res.end();
+    }
 
     req.on('error', function() { /* Ignore Errors */ });
     res.on('error', function() { /* Ignore Errors */ });
